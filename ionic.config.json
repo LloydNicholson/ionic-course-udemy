@@ -1,5 +1,7 @@
 {
   "name": "ionic-full-udemy-course",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
