@@ -1,9 +1,23 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 
 import {Booking} from './booking.model';
 import {BehaviorSubject} from 'rxjs';
 import {AuthService} from '../auth/auth.service';
-import {take, delay, tap} from 'rxjs/operators';
+import {take, delay, tap, switchMap, map} from 'rxjs/operators';
+import {Router} from '@angular/router';
+
+interface BookingData {
+  bookedFrom: string;
+  bookedTo: string;
+  firstName: string;
+  guestNumber: number;
+  lastName: string;
+  placeId: string;
+  placeImage: string;
+  placeTitle: string;
+  userId: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +25,10 @@ import {take, delay, tap} from 'rxjs/operators';
 export class BookingService {
   private _bookings = new BehaviorSubject<Booking[]>([]);
 
-  constructor(private authService: AuthService) {
+  constructor(
+      private authService: AuthService,
+      private httpClient: HttpClient,
+      private router: Router) {
   }
 
   get bookings() {
@@ -28,12 +45,12 @@ export class BookingService {
       dateFrom: Date,
       dateTo: Date
   ) {
-    const userId = this.authService.userId;
+    let generatedId: string;
     const newBooking =
         new Booking(
             Math.random().toString(),
             placeId,
-            userId,
+            this.authService.userId,
             placeTitle,
             placeImage,
             firstName,
@@ -42,11 +59,20 @@ export class BookingService {
             dateFrom,
             dateTo
         );
-    return this.bookings.pipe(
+    return this.httpClient.post<{ name: string }>(
+        'https://ionic-angular-udemy-course.firebaseio.com/bookings.json',
+        {...newBooking, id: null}
+    ).pipe(
+        switchMap(
+            response => {
+              generatedId = response.name;
+              return this.bookings;
+            }),
         take(1),
-        delay(1000),
         tap(bookings => {
+          newBooking.id = generatedId;
           this._bookings.next(bookings.concat(newBooking));
+          this.router.navigate(['places/tabs/discover']);
         })
     );
   }
@@ -57,6 +83,37 @@ export class BookingService {
         delay(1000),
         tap(bookings => {
           this._bookings.next(bookings.filter(booking => booking.id !== bookingId));
+        })
+    );
+  }
+
+  fetchBookings() {
+    return this.httpClient.get<{ [key: string]: BookingData }>(
+        `https://ionic-angular-udemy-course.firebaseio.com/bookings.json?orderBy="userId"&equalTo="
+        ${this.authService.userId}"`
+    ).pipe(map(bookingData => {
+          const bookings = [];
+          for (const key in bookingData) {
+            if (bookingData.hasOwnProperty(key)) {
+              bookings.push(
+                  new Booking(
+                      key,
+                      bookingData[key].placeId,
+                      bookingData[key].userId,
+                      bookingData[key].placeTitle,
+                      bookingData[key].placeImage,
+                      bookingData[key].firstName,
+                      bookingData[key].lastName,
+                      bookingData[key].guestNumber,
+                      new Date(bookingData[key].bookedFrom),
+                      new Date(bookingData[key].bookedTo)
+                  ));
+            }
+          }
+          return bookings;
+        }),
+        tap(bookings => {
+          this._bookings.next(bookings);
         })
     );
   }
