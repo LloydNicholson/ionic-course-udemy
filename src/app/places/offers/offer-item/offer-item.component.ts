@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Place} from '../../places.model';
+import { Component, Input, OnInit } from '@angular/core';
+import { Place } from '../../places.model';
 
 @Component({
   selector: 'app-offer-item',
@@ -8,8 +8,11 @@ import {Place} from '../../places.model';
 })
 export class OfferItemComponent implements OnInit {
   @Input() offer: Place;
-  constructor() { }
 
-  ngOnInit() {}
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
 
 }

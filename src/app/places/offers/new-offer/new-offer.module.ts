@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { NewOfferPage } from './new-offer.page';
+import { SharedModule } from '../../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -19,8 +20,10 @@ const routes: Routes = [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   declarations: [NewOfferPage]
 })
-export class NewOfferPageModule {}
+export class NewOfferPageModule {
+}

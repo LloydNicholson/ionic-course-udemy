@@ -9,7 +9,7 @@ describe('DiscoverPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DiscoverPage ],
+      declarations: [DiscoverPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

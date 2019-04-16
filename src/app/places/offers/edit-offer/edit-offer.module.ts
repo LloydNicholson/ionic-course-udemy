@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -23,4 +23,5 @@ const routes: Routes = [
   ],
   declarations: [EditOfferPage]
 })
-export class EditOfferPageModule {}
+export class EditOfferPageModule {
+}

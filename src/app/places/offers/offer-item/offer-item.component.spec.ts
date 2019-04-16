@@ -9,7 +9,7 @@ describe('OfferItemPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OfferItemPage ],
+      declarations: [OfferItemPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

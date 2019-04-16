@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MenuController} from '@ionic/angular';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 
-import {PlacesService} from '../places.service';
-import {Place} from '../places.model';
-import {Subscription} from 'rxjs';
-import {AuthService} from '../../auth/auth.service';
+import { PlacesService } from '../places.service';
+import { Place } from '../places.model';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-discover',
@@ -29,8 +29,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
         (places) => {
           this.loadedPlaces = places;
           this.relevantPlaces = this.loadedPlaces;
-          this.listedLoadedPlaces = this.relevantPlaces.slice(1);
-
+          this.listedLoadedPlaces = this.loadedPlaces.slice(1);
         }
     );
   }
@@ -39,7 +38,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   //   this.menuController.toggle();
   // }
 
-  onFilterUpdate(event: CustomEvent) {
+  onFilterUpdate(event) {
     if (event.detail.value === 'all') {
       this.relevantPlaces = this.loadedPlaces;
       this.listedLoadedPlaces = this.relevantPlaces.slice(1);

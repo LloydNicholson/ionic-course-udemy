@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Place} from '../../places.model';
-import {PlacesService} from '../../places.service';
-import {AlertController, LoadingController, NavController} from '@ionic/angular';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Place } from '../../places.model';
+import { PlacesService } from '../../places.service';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-offer',

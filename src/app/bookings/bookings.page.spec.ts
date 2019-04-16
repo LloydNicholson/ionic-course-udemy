@@ -9,7 +9,7 @@ describe('BookingsPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BookingsPage ],
+      declarations: [BookingsPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

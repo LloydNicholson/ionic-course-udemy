@@ -4,14 +4,15 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
 import { PlacesPage } from './places.page';
-import {PlacesRoutingModule} from './places-routing.module';
+import { PlacesRoutingModule } from './places-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
     IonicModule,
-      PlacesRoutingModule
+    PlacesRoutingModule
   ],
   declarations: [PlacesPage]
 })
-export class PlacesPageModule {}
+export class PlacesPageModule {
+}

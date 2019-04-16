@@ -1,7 +1,7 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Place} from '../../places/places.model';
-import {ModalController} from '@ionic/angular';
-import {NgForm} from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Place } from '../../places/places.model';
+import { ModalController } from '@ionic/angular';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-create-booking',

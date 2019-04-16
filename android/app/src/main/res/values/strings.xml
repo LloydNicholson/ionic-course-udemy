@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ionic-full-udemy-course</string>
+    <string name="title_activity_main">ionic-full-udemy-course</string>
+    <string name="package_name">io.ionic.ionicfullcourse</string>
+    <string name="fileprovider_authority">io.ionic.ionicfullcourse.fileprovider</string>
+    <string name="custom_url_scheme">io.ionic.ionicfullcourse</string>
+</resources>

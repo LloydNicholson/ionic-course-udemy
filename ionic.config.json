@@ -1,7 +1,8 @@
 {
   "name": "ionic-full-udemy-course",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }

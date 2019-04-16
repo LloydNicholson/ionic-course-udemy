@@ -1,8 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BookingService} from './booking.service';
-import {Booking} from './booking.model';
-import {IonItemSliding, LoadingController} from '@ionic/angular';
-import {Subscription} from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BookingService } from './booking.service';
+import { Booking } from './booking.model';
+import { IonItemSliding, LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-bookings',
@@ -14,7 +14,8 @@ export class BookingsPage implements OnInit, OnDestroy {
   isLoading = false;
   private bookingsSub: Subscription;
 
-  constructor(private bookingService: BookingService, private loadingController: LoadingController) { }
+  constructor(private bookingService: BookingService, private loadingController: LoadingController) {
+  }
 
   ngOnInit() {
     this.bookingsSub = this.bookingService.bookings.subscribe((bookings) => {

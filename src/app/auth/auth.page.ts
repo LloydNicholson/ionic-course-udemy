@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
-import {Router} from '@angular/router';
-import {LoadingController} from '@ionic/angular';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
-import {AuthService} from './auth.service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -17,9 +17,11 @@ export class AuthPage implements OnInit {
   constructor(
       private authService: AuthService,
       private router: Router,
-      private loadingController: LoadingController) { }
+      private loadingController: LoadingController) {
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onLogin() {
     this.isLoading = true;

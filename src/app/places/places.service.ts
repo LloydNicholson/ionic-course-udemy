@@ -1,10 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Place} from './places.model';
-import {AuthService} from '../auth/auth.service';
-import {BehaviorSubject, of} from 'rxjs';
-import {map, switchMap, take, tap} from 'rxjs/operators';
+import { Place } from './places.model';
+import { AuthService } from '../auth/auth.service';
+import { BehaviorSubject, of } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs/operators';
+import { PlaceLocation } from './location.model';
 
 // [
 //   new Place(
@@ -47,6 +48,7 @@ interface PlaceData {
   price: number;
   title: string;
   userId: string;
+  location: PlaceLocation;
 }
 
 @Injectable({
@@ -64,7 +66,7 @@ export class PlacesService {
 
   fetchPlaces() {
     return this.httpClient
-    .get<{ [key: string]: PlaceData }>('https://ionic-angular-udemy-course.firebaseio.com/offered-places.json')
+    .get<{[key: string]: PlaceData}>('https://ionic-angular-udemy-course.firebaseio.com/offered-places.json')
     .pipe(
         map(response => {
           const places = [];
@@ -79,7 +81,8 @@ export class PlacesService {
                       response[key].price,
                       new Date(response[key].availableFrom),
                       new Date(response[key].availableTo),
-                      response[key].userId
+                      response[key].userId,
+                      response[key].location
                   ));
             }
           }
@@ -94,7 +97,7 @@ export class PlacesService {
 
   getPlace(id: string) {
     return this.httpClient.get<PlaceData>(
-        `https://ionic-angular-udemy-course.firebaseio.com/offered-places/${id}.json`
+        `https://ionic-angular-udemy-course.firebaseio.com/offered-places/${ id }.json`
     ).pipe(
         map(placeData => {
           return new Place(
@@ -105,9 +108,19 @@ export class PlacesService {
               placeData.price,
               new Date(placeData.availableFrom),
               new Date(placeData.availableTo),
-              placeData.userId);
+              placeData.userId,
+              placeData.location
+          );
         })
     );
+  }
+
+  uploadImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('image', image);
+
+    return this.httpClient.post<{imageUrl: string, imagePath: string}>
+    ('https://us-central1-ionic-angular-udemy-course.cloudfunctions.net/storeImage', uploadData);
   }
 
   addPlace(
@@ -115,27 +128,30 @@ export class PlacesService {
       description: string,
       price: number,
       dateFrom: Date,
-      dateTo: Date
+      dateTo: Date,
+      location: PlaceLocation,
+      imageUrl: string
   ) {
     let generatedId: string;
     const newPlace = new Place(
         Math.random().toString(),
         title,
         description,
-        'http://johannesburg.hotelguide.co.za/images/four-seasons-hotel-view-590x390.jpg',
+        imageUrl,
         price,
         dateFrom,
         dateTo,
-        this.authService.userId
+        this.authService.userId,
+        location
     );
 
-    return this.httpClient.post<{ name: string }>(
+    return this.httpClient.post<{name: string}>(
         'https://ionic-angular-udemy-course.firebaseio.com/offered-places.json',
         {...newPlace, id: null}
     ).pipe(
         switchMap(response => {
           generatedId = response.name;
-          return this._places;
+          return this.places;
         }),
         take(1),
         tap(places => {
@@ -143,14 +159,6 @@ export class PlacesService {
           this._places.next(places.concat(newPlace));
         })
     );
-
-    // return this.places.pipe(
-    //   take(1),
-    //   delay(1000),
-    //   tap(places => {
-    //     this._places.next(places.concat(newPlace));
-    //   })
-    // );
   }
 
   updatePlace(placeId: string, title: string, description: string) {
@@ -176,10 +184,11 @@ export class PlacesService {
               oldPlace.price,
               oldPlace.availableFrom,
               oldPlace.availableTo,
-              oldPlace.userId
+              oldPlace.userId,
+              oldPlace.location
           );
           return this.httpClient.put(
-              `https://ionic-angular-udemy-course.firebaseio.com/offered-places/${placeId}.json`,
+              `https://ionic-angular-udemy-course.firebaseio.com/offered-places/${ placeId }.json`,
               {...updatedPlaces[updatedPlaceIndex], id: null}
           );
         }),

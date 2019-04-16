@@ -9,7 +9,7 @@ describe('NewOfferPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewOfferPage ],
+      declarations: [NewOfferPage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

@@ -1,13 +1,20 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActionSheetController, AlertController, LoadingController, ModalController, NavController} from '@ionic/angular';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ActionSheetController,
+  AlertController,
+  LoadingController,
+  ModalController,
+  NavController
+} from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {PlacesService} from '../../places.service';
-import {Place} from '../../places.model';
-import {CreateBookingComponent} from '../../../bookings/create-booking/create-booking.component';
-import {Subscription} from 'rxjs';
-import {BookingService} from '../../../bookings/booking.service';
-import {AuthService} from '../../../auth/auth.service';
+import { PlacesService } from '../../places.service';
+import { Place } from '../../places.model';
+import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
+import { Subscription } from 'rxjs';
+import { BookingService } from '../../../bookings/booking.service';
+import { AuthService } from '../../../auth/auth.service';
+import { MapModalComponent } from '../../../shared/map-modal/map-modal.component';
 
 @Component({
   selector: 'app-place-detail',
@@ -125,6 +132,20 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
           );
         });
       }
+    });
+  }
+
+  onShowFullMap() {
+    this.modalController.create({
+      component: MapModalComponent,
+      componentProps: {
+        center: {lat: this.place.location.lat, lng: this.place.location.lng},
+        selectable: false,
+        closeButtonText: 'Close',
+        title: this.place.location.address
+      }
+    }).then((modalEl) => {
+      modalEl.present();
     });
   }
 

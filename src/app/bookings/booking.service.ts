@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {Booking} from './booking.model';
-import {BehaviorSubject} from 'rxjs';
-import {AuthService} from '../auth/auth.service';
-import {take, delay, tap, switchMap, map} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import { Booking } from './booking.model';
+import { BehaviorSubject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { map, switchMap, take, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 interface BookingData {
   bookedFrom: string;
@@ -46,20 +46,19 @@ export class BookingService {
       dateTo: Date
   ) {
     let generatedId: string;
-    const newBooking =
-        new Booking(
-            Math.random().toString(),
-            placeId,
-            this.authService.userId,
-            placeTitle,
-            placeImage,
-            firstName,
-            lastName,
-            guestNumber,
-            dateFrom,
-            dateTo
-        );
-    return this.httpClient.post<{ name: string }>(
+    const newBooking = new Booking(
+        Math.random().toString(),
+        placeId,
+        this.authService.userId,
+        placeTitle,
+        placeImage,
+        firstName,
+        lastName,
+        guestNumber,
+        dateFrom,
+        dateTo
+    );
+    return this.httpClient.post<{name: string}>(
         'https://ionic-angular-udemy-course.firebaseio.com/bookings.json',
         {...newBooking, id: null}
     ).pipe(
@@ -72,26 +71,29 @@ export class BookingService {
         tap(bookings => {
           newBooking.id = generatedId;
           this._bookings.next(bookings.concat(newBooking));
-          this.router.navigate(['places/tabs/discover']);
+          this.router.navigate(['/bookings']);
         })
     );
   }
 
   cancelBooking(bookingId: string) {
-    return this.bookings.pipe(
+    return this.httpClient.delete(`https://ionic-angular-udemy-course.firebaseio.com/bookings/${ bookingId }.json`)
+    .pipe(
+        switchMap(() => {
+          return this.bookings;
+        }),
         take(1),
-        delay(1000),
         tap(bookings => {
-          this._bookings.next(bookings.filter(booking => booking.id !== bookingId));
+          this._bookings.next(bookings.filter(b => b.id !== bookingId));
         })
     );
   }
 
   fetchBookings() {
-    return this.httpClient.get<{ [key: string]: BookingData }>(
-        `https://ionic-angular-udemy-course.firebaseio.com/bookings.json?orderBy="userId"&equalTo="
-        ${this.authService.userId}"`
-    ).pipe(map(bookingData => {
+    return this.httpClient.get<{[key: string]: BookingData}>(
+        `https://ionic-angular-udemy-course.firebaseio.com/bookings.json?orderBy="userId"&equalTo="${ this.authService.userId }"`
+    ).pipe(
+        map(bookingData => {
           const bookings = [];
           for (const key in bookingData) {
             if (bookingData.hasOwnProperty(key)) {
